@@ -11,6 +11,8 @@ namespace TestFF
 {
     public class Main : Plugin<Config>
     {
+        public Main Instance { get; private set; }
+
         public void RefreshBools()
         {
             ServerConfigSynchronizer serversync = new ServerConfigSynchronizer();
@@ -24,10 +26,13 @@ namespace TestFF
 
         public void OnRoundStarted()
         {
-         
-            foreach (Player p in Player.List)
+
+            if (Instance.Config.broadcast)
             {
-                p.Broadcast(2, "Friendly Fire Disabled - RoundEnded", global::Broadcast.BroadcastFlags.Normal, true);
+                foreach (Player p in Player.List)
+                {
+                    p.Broadcast(2, "Friendly Fire Disabled - RoundEnded", global::Broadcast.BroadcastFlags.Normal, true);
+                }
             }
             Server.FriendlyFire = false;
    
@@ -43,9 +48,12 @@ namespace TestFF
                 return;
             }
 
-            foreach (Player p in Player.List)
+            if (Instance.Config.broadcast)
             {
-                p.Broadcast(2, "Friendly Fire Enabled - RoundEnding", global::Broadcast.BroadcastFlags.Normal, true);
+                foreach (Player p in Player.List)
+                {
+                    p.Broadcast(2, "Friendly Fire Enabled - RoundEnding", global::Broadcast.BroadcastFlags.Normal, true);
+                }
             }
             FriendlyFireConfig.PauseDetector = true;
             Server.FriendlyFire = true;
@@ -60,6 +68,7 @@ namespace TestFF
          
             ServerEvents.RoundStarted += this.OnRoundStarted;
             ServerEvents.RoundEnded += this.OnEndingRound;
+            Instance = this;
 
             base.OnEnabled();
         }
@@ -69,6 +78,7 @@ namespace TestFF
         {
             ServerEvents.RoundStarted -= this.OnRoundStarted;
             ServerEvents.RoundEnded -= this.OnEndingRound;
+            Instance = null;
             base.OnDisabled();
         }
 

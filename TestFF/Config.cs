@@ -13,5 +13,7 @@ namespace TestFF
 
         /// <inheritdoc />
         public bool IsEnabled { get; set; } = true;
+
+        public bool broadcast { get; set; } = true;
     }
 }
