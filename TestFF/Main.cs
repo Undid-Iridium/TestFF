@@ -1,4 +1,5 @@
-﻿using Exiled.API.Features;
+﻿using Exiled.API.Enums;
+using Exiled.API.Features;
 using Exiled.API.Features.DamageHandlers;
 using Exiled.Events.EventArgs;
 using System;
@@ -12,6 +13,20 @@ namespace TestFF
     public class Main : Plugin<Config>
     {
         public Main Instance { get; private set; }
+
+        public override PluginPriority Priority { get; } = PluginPriority.Last;
+
+        /// <inheritdoc />
+        public override string Author => "Undid-Iridium";
+
+        /// <inheritdoc />
+        public override string Name => "TestFF";
+
+        /// <inheritdoc />
+        public override Version RequiredExiledVersion { get; } = new Version(5, 1, 3);
+
+        /// <inheritdoc />
+        public override Version Version { get; } = new Version(1, 0, 1);
 
         public void RefreshBools()
         {
